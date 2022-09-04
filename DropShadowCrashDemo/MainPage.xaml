@@ -1,0 +1,100 @@
+﻿<Page x:Class="DropShadowCrashDemo.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:DropShadowCrashDemo"
+      xmlns:model="using:DropShadowCrashDemo.Models"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+      xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+      xmlns:toolkitBehaviors="using:Microsoft.Toolkit.Uwp.UI.Behaviors"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <media:AttachedCardShadow x:Key="BookShadow"
+                                  Offset="0.5,0.5"
+                                  Color="Black"
+                                  CornerRadius="4"
+                                  Opacity=".4"
+                                  BlurRadius="2" />
+
+        <animations:AnimationSet x:Key="ShadowEnterAnimation">
+            <animations:BlurRadiusDropShadowAnimation To="15" />
+            <animations:OpacityDropShadowAnimation To=".6" />
+        </animations:AnimationSet>
+
+        <animations:AnimationSet x:Key="ShadowExitAnimation">
+            <animations:BlurRadiusDropShadowAnimation To="2" />
+            <animations:OpacityDropShadowAnimation To=".4" />
+        </animations:AnimationSet>
+    </Page.Resources>
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Spacing="8">
+            <ListView ItemsSource="{x:Bind Collection}"
+                      SelectionMode="None" Padding="12">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ItemViewModel">
+                        
+                        <Border Background="{x:Bind ColorBrush, Mode=OneWay}"
+                                ui:Effects.Shadow="{StaticResource BookShadow}"
+                                ui:FrameworkElementExtensions.Cursor="Hand"
+                                Width="80" Height="120">
+                            
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="PointerEntered">
+                                    <toolkitBehaviors:StartAnimationAction Animation="{StaticResource ShadowEnterAnimation}" />
+                                </core:EventTriggerBehavior>
+                                <core:EventTriggerBehavior EventName="PointerExited">
+                                    <toolkitBehaviors:StartAnimationAction Animation="{StaticResource ShadowExitAnimation}" />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                            
+                            <Rectangle HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Width="48"
+                                       Height="48"
+                                       Margin="8"
+                                       RadiusX="8"
+                                       RadiusY="8"
+                                       Fill="Black"
+                                       Opacity=".2" />
+                        </Border>
+                        
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid FlowDirection="LeftToRight"
+                                       HorizontalAlignment="Stretch"
+                                       Margin="0"
+                                       Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ListView.ItemContainerTransitions>
+            </ListView>
+
+            <Button Content="Hit me"
+                    HorizontalAlignment="Center"
+                    Click="Button_Click" />
+
+            <TextBlock HorizontalAlignment="Center">
+                <Run Text=" 1. Click on 'Hit me'"/>
+                <LineBreak />
+                <Run Text="2. Move the mouse over the first item on the list." />
+                <LineBreak />
+                <Run Text="3. This will provoke either a crash or a missing drop shadow on that item" />
+            </TextBlock>
+
+        </StackPanel>
+    </Grid>
+</Page>

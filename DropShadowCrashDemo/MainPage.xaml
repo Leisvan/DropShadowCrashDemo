@@ -12,6 +12,7 @@
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
       xmlns:toolkitBehaviors="using:Microsoft.Toolkit.Uwp.UI.Behaviors"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -35,7 +36,10 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Spacing="8">
+                    VerticalAlignment="Top" Spacing="8">
+
+            <TextBlock Text="ListView with ItemsWrapGrid as ItemsPanelTemplate" 
+                       Style="{StaticResource CaptionTextBlockStyle}"/>
             <ListView ItemsSource="{x:Bind Collection}"
                       SelectionMode="None" Padding="12">
                 <ListView.ItemTemplate>
@@ -83,6 +87,56 @@
                 </ListView.ItemContainerTransitions>
             </ListView>
 
+            <TextBlock Text="ListView with Community Toolkit's StaggeredPanel as ItemsPanelTemplate"
+                       Style="{StaticResource CaptionTextBlockStyle}" />
+            <ListView ItemsSource="{x:Bind Collection}"
+                      SelectionMode="None"
+                      Padding="12">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ItemViewModel">
+
+                        <Border Background="{x:Bind ColorBrush, Mode=OneWay}"
+                                ui:Effects.Shadow="{StaticResource BookShadow}"
+                                ui:FrameworkElementExtensions.Cursor="Hand"
+                                Height="120">
+
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="PointerEntered">
+                                    <toolkitBehaviors:StartAnimationAction Animation="{StaticResource ShadowEnterAnimation}" />
+                                </core:EventTriggerBehavior>
+                                <core:EventTriggerBehavior EventName="PointerExited">
+                                    <toolkitBehaviors:StartAnimationAction Animation="{StaticResource ShadowExitAnimation}" />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+
+                            <Rectangle HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Width="48"
+                                       Height="48"
+                                       Margin="8"
+                                       RadiusX="8"
+                                       RadiusY="8"
+                                       Fill="Black"
+                                       Opacity=".2" />
+                        </Border>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:StaggeredPanel HorizontalAlignment="Stretch" 
+                                                 DesiredColumnWidth="105"
+                                                 ColumnSpacing="5"
+                                                 RowSpacing="0" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ListView.ItemContainerTransitions>
+            </ListView>
+
             <Button Content="Hit me"
                     HorizontalAlignment="Center"
                     Click="Button_Click" />
@@ -92,7 +146,7 @@
                 <LineBreak />
                 <Run Text="2. Move the mouse over the first item on the list." />
                 <LineBreak />
-                <Run Text="3. This will provoke either a crash or a missing drop shadow on that item" />
+                <Run Text="3. This will provoke either a crash or a missing drop shadow on that item (ListView using ItemsWrapGrid)" />
             </TextBlock>
 
         </StackPanel>

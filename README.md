@@ -14,5 +14,6 @@ Just to be clear: Sometimes the app crash, sometimes the shadow doesn't render, 
 
 Issue here: https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/4755
 
-**Solution** (Probably)
+### Solution (Probably) 🎉
+
 If we use `StartAnimationAction`, it will call the `AnimationSet.Start()` method, and this method will call `AnimationSet.StartAsync(UIElement element, CancellationToken token)` configured to throw an exception if the token is cancelled. The problem is in there, if we create our own Action/Beavior and call the StartAsync method directly with our own token we would be avoiding the crash.

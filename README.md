@@ -11,3 +11,5 @@ To make this issue happen:
 Just to be clear: Sometimes the app crash, sometimes the shadow doesn't render, I don't see why the issue alternates between these two behaviors.
 
 **Note:** It's important to note that the ListViews used in this demo has an empty `TransitionCollection`, that's because I need the items not having animations on adding or removing, if you remove the empty `TransitionCollection` the drop shadow behaves as expected.
+
+Issue here: https://github.com/CommunityToolkit/WindowsCommunityToolkit/issues/4755
